@@ -101,12 +101,51 @@ Presenter - презентер содержит основную логику п
 ## Данные
 
 ### Интерфейс IProduct
+Описывает структуру товара.
+
+```typescript
+interface IProduct {
+  id: string;           // Уникальный идентификатор товара
+  description: string;  // Описание товара
+  image: string;        // URL изображения товара
+  title: string;        // Название товара
+  category: string;     // Категория товара
+  price: number | null; // Цена товара (null если товар не имеет цены)
+}
+```
 
 ### Тип TPayment
+Описывает допустимые способы оплаты.
+
+```typescript
+type TPayment = 'card' | 'cash';
+```
 
 ### Интерфейс IBuyer
+Описывает данные покупателя при оформлении заказа.
+
+```typescript
+interface IBuyer {
+  payment: TPayment;  // Способ оплаты (описаны в типе TPayment)
+  email: string;      // Email покупателя
+  phone: string;      // Телефон покупателя
+  address: string;    // Адрес доставки
+}
+```
 
 ### Интерфейс IOrder
+Описывает структуру заказа для отправки на сервер.
+
+```typescript
+interface IOrder {
+  payment: TPayment;    // Способ оплаты
+  email: string;        // Email покупателя
+  phone: string;        // Телефон покупателя
+  address: string;      // Адрес доставки
+  total: number;        // Общая стоимость заказа
+  items: string[];      // Массив id товаров в заказе
+}
+```
 
 ## Модели данных
 
