@@ -126,7 +126,7 @@ type TPayment = 'card' | 'cash';
 
 ```typescript
 interface IBuyer {
-  payment: TPayment;  // Способ оплаты (описаны в типе TPayment)
+  payment: TPayment;  // Способ оплаты (описаны в типе TPayment - 'card' | 'cash')
   email: string;      // Email покупателя
   phone: string;      // Телефон покупателя
   address: string;    // Адрес доставки
@@ -134,20 +134,110 @@ interface IBuyer {
 ```
 
 ### Интерфейс IOrder
-Описывает структуру заказа для отправки на сервер.
+Описывает структуру заказа для отправки на сервер. Расширяет интерфейс `IBuyer`, добавляя информацию о составе и стоимости заказа.
 
 ```typescript
-interface IOrder {
-  payment: TPayment;    // Способ оплаты
-  email: string;        // Email покупателя
-  phone: string;        // Телефон покупателя
-  address: string;      // Адрес доставки
-  total: number;        // Общая стоимость заказа
+interface IOrder extends IBuyer {
+  total: number;        // Общая стоимость товаров в заказе
   items: string[];      // Массив id товаров в заказе
 }
 ```
 
+Таким образом, `IOrder` включает все поля из `IBuyer` (payment, email, phone, address) плюс свои уникальные поля (total, items).
+
+### Интерфейс IProductsResponse
+Описывает ответ сервера при запросе каталога товаров.
+
+```typescript
+interface IProductsResponse {
+  total: number;      // Общее количество товаров
+  items: IProduct[];  // Массив товаров
+}
+```
+
+### Интерфейс IOrderResult
+Описывает ответ сервера после успешного оформления заказа.
+
+```typescript
+interface IOrderResult {
+  id: string;       // ID созданного заказа
+  total: number;    // Итоговая сумма заказа
+}
+```
+
+### Интерфейс IValidationErrors
+Описывает объект с ошибками валидации данных покупателя.
+
+```typescript
+interface IValidationErrors {
+  payment?: string;  // Ошибка валидации способа оплаты
+  address?: string;  // Ошибка валидации адреса
+  email?: string;    // Ошибка валидации email
+  phone?: string;    // Ошибка валидации телефона
+}
+```
+
+### Интерфейс IProductsModel
+Описывает контракт для класса управления каталогом товаров.
+
+```typescript
+interface IProductsModel {
+  setItems(items: IProduct[]): void;
+  getItems(): IProduct[];
+  getProduct(id: string): IProduct | undefined;
+  setPreview(product: IProduct): void;
+  getPreview(): IProduct | null;
+}
+```
+
+### Интерфейс ICartModel
+Описывает контракт для класса управления корзиной.
+
+```typescript
+interface ICartModel {
+  getItems(): IProduct[];
+  addItem(product: IProduct): void;
+  removeItem(productId: string): void;
+  clear(): void;
+  getTotal(): number;
+  getCount(): number;
+  contains(productId: string): boolean;
+}
+```
+
+### Интерфейс IBuyerModel
+Описывает контракт для класса управления данными покупателя.
+
+```typescript
+interface IBuyerModel {
+  setPayment(payment: TPayment): void;
+  setAddress(address: string): void;
+  setEmail(email: string): void;
+  setPhone(phone: string): void;
+  setData(data: Partial<IBuyer>): void;
+  getData(): IBuyer;
+  clear(): void;
+  validate(): IValidationErrors;
+}
+```
+
+### Интерфейс IWebLarekAPI
+Описывает контракт для класса работы с API сервера.
+
+```typescript
+interface IWebLarekAPI {
+  getProducts(): Promise<IProduct[]>;
+  createOrder(order: IOrder): Promise<IOrderResult>;
+}
+```
+
 ## Модели данных
+
+### Класс ProductsModel
+
+### Класс CartModel
+
+### Класс BuyerModel
 
 ## Слой коммуникации
 
