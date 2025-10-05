@@ -27,11 +27,66 @@ export interface IBuyer {
 }
 
 // Интерфейс заказа
-export interface IOrder {
-  payment: TPayment;
-  email: string;
-  phone: string;
-  address: string;
+export interface IOrder extends IBuyer {
   total: number;
   items: string[];
+}
+
+// Интерфейс ответа сервера при запросе каталога
+export interface IProductsResponse {
+  total: number;
+  items: IProduct[];
+}
+
+// Интерфейс ответа сервера после оформления заказа
+export interface IOrderResult {
+  id: string;
+  total: number;
+}
+
+// Интерфейс объекта с ошибками валидации
+export interface IValidationErrors {
+  payment?: string;
+  address?: string;
+  email?: string;
+  phone?: string;
+}
+
+// Интерфейс для модели управления каталогом товаров
+export interface IProductsModel {
+  setItems(items: IProduct[]): void;
+  getItems(): IProduct[];
+  getProduct(id: string): IProduct | undefined;
+  setPreview(product: IProduct): void;
+  getPreview(): IProduct | null;
+}
+
+// Интерфейс для модели управления корзиной товаров
+export interface ICartModel {
+  getItems(): IProduct[];
+  addItem(product: IProduct): void;
+  removeItem(productId: string): void;
+  clear(): void;
+  getTotal(): number;
+  getCount(): number;
+  contains(productId: string): boolean;
+}
+
+
+// Интерфейс для модели управления данными покупателя
+export interface IBuyerModel {
+  setPayment(payment: TPayment): void;
+  setAddress(address: string): void;
+  setEmail(email: string): void;
+  setPhone(phone: string): void;
+  setData(data: Partial<IBuyer>): void;
+  getData(): IBuyer;
+  clear(): void;
+  validate(): IValidationErrors;
+}
+
+// Интерфейс для взаимодействия с API интернет-магазина
+export interface IWebLarekAPI {
+  getProducts(): Promise<IProduct[]>;
+  createOrder(order: IOrder): Promise<IOrderResult>;
 }
