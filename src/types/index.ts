@@ -19,7 +19,7 @@ export interface IProduct {
 export type TPayment = 'card' | 'cash';
 
 // Интерфейс для покупателя
-export interface IBuyer {
+export interface IBuyerData {
   payment: TPayment;
   email: string;
   phone: string;
@@ -27,7 +27,7 @@ export interface IBuyer {
 }
 
 // Интерфейс заказа
-export interface IOrder extends IBuyer {
+export interface IOrder extends IBuyerData {
   total: number;
   items: string[];
 }
@@ -79,8 +79,8 @@ export interface IBuyerModel {
   setAddress(address: string): void;
   setEmail(email: string): void;
   setPhone(phone: string): void;
-  setData(data: Partial<IBuyer>): void;
-  getData(): IBuyer;
+  setData(data: Partial<IBuyerData>): void;
+  getData(): IBuyerData;
   clear(): void;
   validate(): IValidationErrors;
 }
