@@ -75,10 +75,6 @@ export interface ICartModel {
 
 // Интерфейс для модели управления данными покупателя
 export interface IBuyerModel {
-  setPayment(payment: TPayment): void;
-  setAddress(address: string): void;
-  setEmail(email: string): void;
-  setPhone(phone: string): void;
   setData(data: Partial<IBuyerData>): void;
   getData(): IBuyerData;
   clear(): void;
