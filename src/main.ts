@@ -1,13 +1,13 @@
 import './scss/styles.scss';
 import { BuyerModel } from './components/models/BuyerModel';
-
-//import { CartModel } from './components/models/CartModel';
+//import { ProductsModel } from './components/models/ProductsModel'
+import { CartModel } from './components/models/CartModel';
 //import { apiProducts } from './utils/data';
 
 // Создание экземпляров классов
 const buyerModel = new BuyerModel();
 //const productsModel = new ProductsModel();
-//const cartModel = new CartModel();
+const cartModel = new CartModel();
 
 // ========================================
 // Тестирование класса BuyerModel
