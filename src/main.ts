@@ -1,12 +1,12 @@
 import './scss/styles.scss';
 import { BuyerModel } from './components/models/BuyerModel';
-//import { ProductsModel } from './components/models/ProductsModel'
+import { ProductsModel } from './components/models/ProductsModel'
 import { CartModel } from './components/models/CartModel';
-//import { apiProducts } from './utils/data';
+import { apiProducts } from './utils/data';
 
 // Создание экземпляров классов
 const buyerModel = new BuyerModel();
-//const productsModel = new ProductsModel();
+const productsModel = new ProductsModel();
 const cartModel = new CartModel();
 
 // ========================================
@@ -48,3 +48,61 @@ console.log('Результат валидации первого шага за�
 // Валидация второго шага заказа
 buyerModel.setData({ email: 'mail@mail.ru', phone: '+79652587454' });
 console.log('Результат валидации второго шага заказа (email и phone):', buyerModel.validate(2));
+
+console.log('#################################');
+
+// ========================================
+// Тестирование класса ProductsModel
+// ========================================
+console.log('--- Тестирование класса ProductsModel ---');
+
+// Сохраняем товары из тестовых данных
+productsModel.setItems(apiProducts.items);
+console.log('Товары сохранены в каталоге');
+
+// Получаем все товары
+const allProducts = productsModel.getItems();
+console.log('Количество товаров в каталоге:', allProducts.length);
+console.log('Массив товаров из каталога:', allProducts);
+
+// Получаем товар по id
+console.log('Товар, полученный по id:', productsModel.getProduct(allProducts[3].id));
+
+// Устанавливаем товар для предпросмотра
+productsModel.setPreview(allProducts[2]);
+console.log('Товар для предпросмотра:', productsModel.getPreview());
+
+console.log('#################################');
+
+// ========================================
+// Тестирование класса CartModel
+// ========================================
+console.log('--- Тестирование CartModel ---');
+
+// Проверяем начальное состояние корзины
+console.log('Начальное количество товаров в корзине:', cartModel.getCount());
+
+// Добавляем товары в корзину
+cartModel.addItem(allProducts[0]);
+cartModel.addItem(allProducts[1]);
+cartModel.addItem(allProducts[2]);
+console.log('Добавлено 3 товара в корзину');
+
+// Получаем товары из корзины
+console.log('Количество товаров в корзине:', cartModel.getCount());
+console.log('Товары в корзине:', cartModel.getItems());
+
+// Проверяем общую стоимость
+console.log('Общая стоимость товаров в корзине:', cartModel.getTotal(), 'синапсов');
+
+// Проверяем наличие товара
+console.log('Товар с id', allProducts[0].id, 'в корзине:', cartModel.contains(allProducts[0].id));
+
+// Удаляем товар из корзины
+cartModel.removeItem(allProducts[0].id);
+console.log('Товар удалён из корзины. Осталось товаров:', cartModel.getCount());
+console.log('Товары после удаления:', cartModel.getItems());
+
+// Очищаем корзину
+cartModel.clear();
+console.log('Корзина очищена. Количество товаров:', cartModel.getCount());
