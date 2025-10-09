@@ -78,7 +78,7 @@ export interface IBuyerModel {
   setData(data: Partial<IBuyerData>): void;
   getData(): IBuyerData;
   clear(): void;
-  validate(): IValidationErrors;
+  validate(step?: 1 | 2): IValidationErrors;
 }
 
 // Интерфейс для взаимодействия с API интернет-магазина

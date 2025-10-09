@@ -7,7 +7,7 @@
 - src/components/ — папка с JS компонентами
 - src/components/base/ — папка с базовым кодом
 - src/components/models/ — папка с моделями данных
-- src/components/services/ — папка для сервисов и API клиентов
+- src/services/ — папка для сервисов и API клиентов
 
 Важные файлы:
 - index.html — HTML-файл главной страницы
@@ -212,14 +212,10 @@ interface ICartModel {
 
 ```typescript
 interface IBuyerModel {
-  setPayment(payment: TPayment): void;
-  setAddress(address: string): void;
-  setEmail(email: string): void;
-  setPhone(phone: string): void;
   setData(data: Partial<IBuyer>): void;
   getData(): IBuyer;
   clear(): void;
-  validate(): IValidationErrors;
+  validate(step?: 1 | 2): IValidationErrors;
 }
 ```
 
