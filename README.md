@@ -4,10 +4,15 @@
 
 Структура проекта:
 - src/ — исходные файлы проекта
-- src/components/ — папка с JS компонентами
-- src/components/base/ — папка с базовым кодом
-- src/components/models/ — папка с моделями данных
-- src/services/ — папка для сервисов и API клиентов
+- src/components/ # Компоненты приложения
+- src/components/base/ # Базовые классы
+- src/components/models/ # Модели данных
+- src/services/ # Сервисы API
+- src/types/index.ts # Типы и интерфейсы
+- src/main.ts # Точка входа
+- src/scss/styles.scss # Основные стили
+- src/utils/constants.ts # Константы
+- src/utils/utils.ts # Вспомогательные функции
 
 Важные файлы:
 - index.html — HTML-файл главной страницы
@@ -117,14 +122,14 @@ interface IProduct {
 ```
 
 ### Тип TPayment
-Описывает допустимые способы оплаты.
+Описывает возможные способы оплаты.
 
 ```typescript
 type TPayment = 'card' | 'cash';
 ```
 
 ### Интерфейс IBuyerData
-Описывает данные покупателя при оформлении заказа.
+Описывает данные покупателя для оформления заказа.
 
 ```typescript
 interface IBuyerData {
@@ -212,8 +217,8 @@ interface ICartModel {
 
 ```typescript
 interface IBuyerModel {
-  setData(data: Partial<IBuyer>): void;
-  getData(): IBuyer;
+  setData(data: Partial<IBuyerData>): void;
+  getData(): IBuyerData;
   clear(): void;
   validate(step?: 1 | 2): IValidationErrors;
 }
