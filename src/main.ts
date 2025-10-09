@@ -3,11 +3,16 @@ import { BuyerModel } from './components/models/BuyerModel';
 import { ProductsModel } from './components/models/ProductsModel'
 import { CartModel } from './components/models/CartModel';
 import { apiProducts } from './utils/data';
+import { API_URL } from './utils/constants';
+import { Api } from './components/base/Api';
+import { WebLarekAPI } from './services/WebLarekAPI';
 
 // Создание экземпляров классов
 const buyerModel = new BuyerModel();
 const productsModel = new ProductsModel();
 const cartModel = new CartModel();
+const api = new Api(API_URL);
+const webLarekAPI = new WebLarekAPI(api);
 
 // ========================================
 // Тестирование класса BuyerModel
@@ -49,7 +54,7 @@ console.log('Результат валидации первого шага за�
 buyerModel.setData({ email: 'mail@mail.ru', phone: '+79652587454' });
 console.log('Результат валидации второго шага заказа (email и phone):', buyerModel.validate(2));
 
-console.log('#################################');
+console.log('\n#################################\n\n');
 
 // ========================================
 // Тестирование класса ProductsModel
@@ -72,7 +77,7 @@ console.log('Товар, полученный по id:', productsModel.getProduc
 productsModel.setPreview(allProducts[2]);
 console.log('Товар для предпросмотра:', productsModel.getPreview());
 
-console.log('#################################');
+console.log('\n#################################\n\n');
 
 // ========================================
 // Тестирование класса CartModel
@@ -106,3 +111,30 @@ console.log('Товары после удаления:', cartModel.getItems());
 // Очищаем корзину
 cartModel.clear();
 console.log('Корзина очищена. Количество товаров:', cartModel.getCount());
+
+console.log('\n#################################\n\n');
+
+// ========================================
+// Тестирование WebLarekAPI - запрос к серверу
+// ========================================
+console.log('--- Тестирование WebLarekAPI ---');
+console.log('Выполняется запрос к серверу за каталогом товаров...\n');
+
+// Запрос товаров с сервера
+webLarekAPI.getProducts()
+  .then(productsFromServer => {
+    console.log('Товары успешно получены с сервера');
+    console.log('Количество товаров с сервера:', productsFromServer.length);
+    
+    // Сохраняем полученные товары в модель каталога
+    productsModel.setItems(productsFromServer);
+    console.log('Товары сохранены в каталоге');
+    
+    // Получаем и выводим сохранённый каталог
+    console.log('Товары из модели каталога:', productsModel.getItems());
+    
+    console.log('\n=== Тестирование завершено успешно ===');
+  })
+  .catch(error => {
+    console.error('Ошибка при получении товаров:', error);
+  });
