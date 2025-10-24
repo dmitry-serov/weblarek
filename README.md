@@ -326,3 +326,8 @@ interface IWebLarekAPI {
 ### **Класс ContactsForm**
 
 ### **Класс Succes**
+
+ ## Описание событий
+ basket:open
+ catalog:changed
+ card:select

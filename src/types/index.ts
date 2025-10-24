@@ -86,3 +86,6 @@ export interface IWebLarekAPI {
   getProducts(): Promise<IProduct[]>;
   createOrder(order: IOrder): Promise<IOrderResult>;
 }
+
+// Тип для карточки товара в каталоге
+export type TCardCatalog = Pick<IProduct, 'title' | 'image' | 'category' | 'price'>;

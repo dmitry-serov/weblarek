@@ -1,4 +1,5 @@
 import { IProduct, IProductsModel } from '../../types/index';
+ import { IEvents } from '../base/Events';
 
 /**
  * Класс для управления каталогом товаров
@@ -8,12 +9,15 @@ export class ProductsModel implements IProductsModel {
   private _items: IProduct[] = [];
   private _preview: IProduct | null = null;
 
+  constructor(protected events: IEvents) {}
+
   /**
    * Сохраняет массив товаров в каталоге
    * @param items - массив товаров для сохранения
    */
   setItems(items: IProduct[]): void {
     this._items = items;
+    this.events.emit('catalog:changed');
   }
 
   /**
