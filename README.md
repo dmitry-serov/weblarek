@@ -221,7 +221,7 @@ interface IBuyerModel {
   setData(data: Partial<IBuyerData>): void;
   getData(): IBuyerData;
   clear(): void;
-  validate(step?: 1 | 2): IValidationErrors;
+  validate(): IValidationErrors;
 }
 ```
 
@@ -363,6 +363,22 @@ type TCardBasket = Pick<IProduct, 'title' | 'price'> & {
 Методы:
 * `set catalog(items: HTMLElement[]): void` — заменяет содержимое галереи переданным массивом карточек товаров
 * `render(data: IGallery): HTMLElement` — вызывает `set catalog` с переданными данными и возвращает контейнер галереи
+
+### Класс Page
+Управляет общим лэйаутом страницы. Отвечает за отображение шапки, галереи товаров и блокировку прокрутки. Наследуется от `Component`
+
+Конструктор:
+* `constructor(container: HTMLElement, events: IEvents)` — принимает корневой DOM-элемент страницы и брокер событий. Инициализирует обёртку страницы, шапку (`Header`) и галерею (`Gallery`), связывая их с DOM и событиями
+
+Поля класса:
+* `_wrapper: HTMLElement` — контейнер `.page__wrapper`, используется для управления прокруткой
+* `_header: Header` — компонент шапки, отображает счётчик товаров
+* `_gallery: Gallery` — компонент галереи, отображает карточки товаров
+
+Методы:
+* `set counter(value: number): void` — передаёт значение счётчика в компонент `Header`
+* `set catalog(items: HTMLElement[]): void` — передаёт массив карточек товаров в компонент `Gallery`
+* `set locked(value: boolean): void` — включает или отключает класс `page__wrapper_locked`, блокируя прокрутку страницы
 
 ### Класс Modal
 Отвечает за управление модальным окном: отображение, закрытие по клику, клавише Escape и кнопке закрытия
@@ -541,7 +557,7 @@ type TCardBasket = Pick<IProduct, 'title' | 'price'> & {
 ### От моделей:
 * `catalog:changed` — обновление каталога
 * `preview:changed` — выбор товара для просмотра
-* `cart:changed` — изменение корзины
+* `basket:changed` — изменение корзины
 * `buyer:changed` — изменение данных покупателя
 
 ### От представлений:
@@ -560,7 +576,7 @@ type TCardBasket = Pick<IProduct, 'title' | 'price'> & {
 ## Презентер
 Презентер реализован в файле `main.ts` и отвечает за связывание слоёв модели и представления, а также за обработку событий, генерируемых компонентами интерфейса и моделями данных. Он не вынесен в отдельный класс, но полностью реализует паттерн MVP
 
-* подписывается на события от моделей (`catalog:changed`, `cart:changed`, `buyer:changed`)
+* подписывается на события от моделей (`catalog:changed`, `basket:changed`, `buyer:changed`)
 * подписывается на события от представлений (`card:select`, `basket:open`, `order:start`, `order:submit`, `contacts:submit`)
 * управляет отображением компонентов в модальном окне
 * обновляет состояние форм, корзины и счётчика товаров

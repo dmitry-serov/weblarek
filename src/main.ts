@@ -108,7 +108,7 @@ events.on('preview:changed', () => {
 });
 
 // Изменилась корзина - обновить счётчик и содержимое
-events.on('cart:changed', () => {
+events.on('basket:changed', () => {
   page.counter = cartModel.getCount();
   
   // Формирование списка товаров в корзине
@@ -137,14 +137,17 @@ events.on('cart:changed', () => {
 
 // Изменились данные покупателя - обновить валидацию
 events.on('buyer:changed', () => {
-  const orderErrors = buyerModel.validate(1);
-  const contactsErrors = buyerModel.validate(2);
+  const allErrors = buyerModel.validate();
   
-  orderForm.valid = Object.keys(orderErrors).length === 0;
-  orderForm.errors = Object.values(orderErrors).filter(i => !!i).join('; ');
+  // Ошибки для формы заказа (шаг 1)
+  const orderErrorValues = [allErrors.payment, allErrors.address].filter(i => !!i);
+  orderForm.valid = orderErrorValues.length === 0;
+  orderForm.errors = orderErrorValues.join('; ');
   
-  contactsForm.valid = Object.keys(contactsErrors).length === 0;
-  contactsForm.errors = Object.values(contactsErrors).filter(i => !!i).join('; ');
+  // Ошибки для формы контактов (шаг 2)
+  const contactsErrorValues = [allErrors.email, allErrors.phone].filter(i => !!i);
+  contactsForm.valid = contactsErrorValues.length === 0;
+  contactsForm.errors = contactsErrorValues.join('; ');
 });
 
 //  ========================= СОБЫТИЯ ОТ VIEW =========================

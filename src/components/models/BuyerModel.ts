@@ -63,28 +63,23 @@ export class BuyerModel implements IBuyerModel {
    * Можно указать шаг: 1 (оплата + адрес) или 2 (email + телефон)
    * @returns объект с ошибками валидации
    */
-  validate(step?: 1 | 2): IValidationErrors {
+  validate(): IValidationErrors {
     const errors: IValidationErrors = {};
 
-    // === шаг 1 ===
-    if (!step || step === 1) {
-      if (!this._payment) {
-        errors.payment = 'Выберите способ оплаты';
-      }
-      if (!this._address.trim()) {
-        errors.address = 'Введите адрес доставки';
-      }
+    if (!this._payment) {
+      errors.payment = 'Выберите способ оплаты';
+    }
+    
+    if (!this._address.trim()) {
+      errors.address = 'Введите адрес доставки';
     }
 
-    // === шаг 2 ===
-    if (!step || step === 2) {
-      if (!this._email.trim()) {
-        errors.email = 'Введите адрес электронной почты';
-      }
+    if (!this._email.trim()) {
+      errors.email = 'Введите адрес электронной почты';
+    }
 
-      if (!this._phone.trim()) {
-        errors.phone = 'Введите номер телефона';
-      }
+    if (!this._phone.trim()) {
+      errors.phone = 'Введите номер телефона';
     }
 
     return errors;
