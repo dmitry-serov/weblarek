@@ -55,7 +55,7 @@ export class CardPreview extends Card<TCardPreview> {
       return;
     }
     
-    this._button.textContent = value ? 'Удалить из корзины' : 'В корзину';
+    this._button.textContent = value ? 'Удалить из корзины' : 'Купить';
   }
 
   set price(value: number | null) {

@@ -1,4 +1,5 @@
 import { IBuyerData, TPayment, IValidationErrors, IBuyerModel } from '../../types/index';
+import { IEvents } from '../base/Events';
 
 /**
  * Класс для управления данными покупателя
@@ -9,6 +10,8 @@ export class BuyerModel implements IBuyerModel {
   private _address: string = '';
   private _email: string = '';
   private _phone: string = '';
+
+  constructor(protected events: IEvents) {}
 
   /**
    * Устанавливает данные покупателя
@@ -28,6 +31,8 @@ export class BuyerModel implements IBuyerModel {
     if (data.phone !== undefined) {
       this._phone = data.phone;
     }
+
+    this.events.emit('buyer:changed');
   }
 
   /**

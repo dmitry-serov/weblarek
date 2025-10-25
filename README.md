@@ -390,7 +390,7 @@ interface IWebLarekAPI {
 Представляет карточку товара для детального просмотра в модальном окне. Наследуется от базового класса `Card` и дополняется отображением изображения, категории, описания и состояния выбора
 
 Конструктор:
-`constructor(container: HTMLElement, actions?: ICardActions)` — принимает DOM-элемент карточки и объект с обработчиком `onClick`. Инициализирует элементы изображения, категории, описания и кнопки, навешивает обработчик на кнопку «В корзину»
+`constructor(container: HTMLElement, actions?: ICardActions)` — принимает DOM-элемент карточки и объект с обработчиком `onClick`. Инициализирует элементы изображения, категории, описания и кнопки, навешивает обработчик на кнопку «Купить»
 
 Поля класса:
 `_image: HTMLImageElement` — DOM-элемент изображения товара (`.card__image`)
@@ -403,7 +403,7 @@ interface IWebLarekAPI {
 `set image(value: string): void` — устанавливает изображение товара с помощью `setImage`, передавая `src` и `alt`
 `set category(value: string): void` — отображает название категории и применяет соответствующий CSS-класс из `categoryMap`
 `set description(value: string): void` — отображает текстовое описание товара
-`set selected(value: boolean): void` — изменяет текст кнопки: «Удалить из корзины» или «В корзину»
+`set selected(value: boolean): void` — изменяет текст кнопки: «Удалить из корзины» или «Купить»
 `set price(value: number | null): void` — отображает цену товара или «Недоступно» и блокирует кнопку, если цена отсутствует
 `set title(value: string): void` — устанавливает название товара (унаследован от `Card`)
 `setImage(img: HTMLImageElement, src: string, alt?: string): void` — устанавливает изображение (унаследован от `Component`)
