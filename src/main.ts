@@ -7,8 +7,7 @@ import { Api } from './components/base/Api';
 import { WebLarekAPI } from './services/WebLarekAPI';
 import { EventEmitter } from './components/base/Events';
 import { cloneTemplate, ensureElement } from './utils/utils';
-import { Header } from './components/view/Header';
-import { Gallery } from './components/view/Gallery';
+import { Page } from './components/view/Page';
 import { CardCatalog } from './components/view/CardCatalog';
 import { CardPreview } from './components/view/CardPreview';
 import { CardBasket } from './components/view/CardBasket';
@@ -29,15 +28,8 @@ const buyerModel = new BuyerModel(events);
 const productsModel = new ProductsModel(events);
 const cartModel = new CartModel(events);
 
-// Инициализация шапки сайта
-const headerContainer = ensureElement<HTMLElement>('.header');
-const header = new Header(events, headerContainer);
-
-// Инициализация галереи товаров
-const galleryContainer = ensureElement<HTMLElement>('.gallery');
-const gallery = new Gallery(galleryContainer);
-
 // Инициализация модального окна
+const page = new Page(document.body, events);
 const modalContainer = ensureElement<HTMLElement>('#modal-container');
 const modal = new Modal(modalContainer, events);
 
@@ -75,9 +67,7 @@ events.on('catalog:changed', () => {
     });
   });
   
-  gallery.render({
-    catalog: itemCards
-  });
+  page.catalog = itemCards;
 });
 
 // Изменился выбранный товар - показать превью
@@ -110,8 +100,9 @@ events.on('preview:changed', () => {
 
 // Изменилась корзина - обновить счётчик и содержимое
 events.on('cart:changed', () => {
-  header.counter = cartModel.getCount();
+  page.counter = cartModel.getCount();
   
+  // Формирование списка товаров в корзине
   const items = cartModel.getItems().map((item, index) => {
     const card = new CardBasket(cloneTemplate(cardBasketTemplate), {
       onClick: () => cartModel.removeItem(item.id)
@@ -221,14 +212,12 @@ events.on('contacts:submit', () => {
 
 // Блокировка прокрутки при открытии модального окна
 events.on('modal:open', () => {
-  const wrapper = ensureElement<HTMLElement>('.page__wrapper');
-  wrapper.classList.add('page__wrapper_locked');
+  page.locked = true;
 });
 
 // Разблокировка прокрутки при закрытии модального окна
 events.on('modal:close', () => {
-  const wrapper = ensureElement<HTMLElement>('.page__wrapper');
-  wrapper.classList.remove('page__wrapper_locked');
+  page.locked = false;
 });
 
 // Загрузка каталога товаров
