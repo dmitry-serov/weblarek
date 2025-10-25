@@ -1,4 +1,5 @@
 import { IProduct, ICartModel } from '../../types/index';
+import { IEvents } from '../base/Events';
 
 /**
  * Класс для управления корзиной покупок
@@ -6,6 +7,8 @@ import { IProduct, ICartModel } from '../../types/index';
  */
 export class CartModel implements ICartModel {
   private _items: IProduct[] = [];
+
+  constructor(protected events: IEvents) {}
 
   /**
    * Возвращает массив товаров в корзине
@@ -23,6 +26,7 @@ export class CartModel implements ICartModel {
   addItem(product: IProduct): void {
     if (!this.contains(product.id)) {
       this._items.push(product);
+      this.events.emit('cart:changed');
     }
   }
 
@@ -32,6 +36,7 @@ export class CartModel implements ICartModel {
    */
   removeItem(productId: string): void {
     this._items = this._items.filter(item => item.id !== productId);
+    this.events.emit('cart:changed');
   }
 
   /**
@@ -39,6 +44,7 @@ export class CartModel implements ICartModel {
    */
   clear(): void {
     this._items = [];
+    this.events.emit('cart:changed');
   }
 
   /**

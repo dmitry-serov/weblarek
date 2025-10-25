@@ -1,5 +1,5 @@
 import { IProduct, IProductsModel } from '../../types/index';
- import { IEvents } from '../base/Events';
+import { IEvents } from '../base/Events';
 
 /**
  * Класс для управления каталогом товаров
@@ -43,6 +43,7 @@ export class ProductsModel implements IProductsModel {
    */
   setPreview(product: IProduct): void {
     this._preview = product;
+    this.events.emit('preview:changed');
   }
 
   /**

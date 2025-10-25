@@ -234,7 +234,11 @@ interface IWebLarekAPI {
 }
 ```
 
-### Тип type TCardCatalog
+### Тип TCardCatalog
+
+### Тип TCardPreview
+
+### Тип TCardBasket
 
 ## Модели данных
 
@@ -385,3 +389,7 @@ interface IWebLarekAPI {
  `basket:open` — открытие корзины
  `catalog:changed` — изменился каталог товаров
  `card:select` — выбор карточки
+ `preview:changed`
+ `modal:open`
+ `modal:close`
+ `order:start`

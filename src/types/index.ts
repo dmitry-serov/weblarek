@@ -89,3 +89,13 @@ export interface IWebLarekAPI {
 
 // Тип для карточки товара в каталоге
 export type TCardCatalog = Pick<IProduct, 'title' | 'image' | 'category' | 'price'>;
+
+// Тип для детального просмотра товара в модальном окне
+ export type TCardPreview = Pick<IProduct, 'title' | 'image' | 'category' | 'price' | 'description'> & { 
+  selected: boolean 
+};
+
+// Тип для карточки товара в корзине
+export type TCardBasket = Pick<IProduct, 'title' | 'price'> & { 
+  index: number 
+};
