@@ -7,6 +7,7 @@
 - src/components/ # Компоненты приложения
 - src/components/base/ # Базовые классы
 - src/components/models/ # Модели данных
+- src/components/view/ # Слой представления
 - src/services/ # Сервисы API
 - src/types/index.ts # Типы и интерфейсы
 - src/main.ts # Точка входа
@@ -235,10 +236,37 @@ interface IWebLarekAPI {
 ```
 
 ### Тип TCardCatalog
+Описывает структуру карточки товара, отображаемой в каталоге.
+
+```typescript
+type TCardCatalog = Pick<IProduct, 'title' | 'image' | 'category' | 'price'>;
+```
+`title` — название товара
+`image` — ссылка на изображение
+`category` — категория товара
+`price` — цена товара
 
 ### Тип TCardPreview
+Описывает структуру карточки товара при детальном просмотре в модальном окне.
+
+```typescript
+type TCardPreview = Pick<IProduct, 'title' | 'image' | 'category' | 'price' | 'description'> & {
+  selected: boolean;
+};
+```
+`title`, `image`, `category`, `price`, `description` — поля из `IProduct`
+`selected` — флаг, указывающий, выбран ли товар
 
 ### Тип TCardBasket
+Описывает структуру карточки товара, отображаемой в корзине.
+
+```typescript
+type TCardBasket = Pick<IProduct, 'title' | 'price'> & {
+  index: number;
+};
+```
+`title`, `price` — поля из `IProduct`
+`index` — порядковый номер товара в корзине
 
 ## Модели данных
 
@@ -294,7 +322,7 @@ interface IWebLarekAPI {
 
 ## Слой коммуникации
 
-### **Класс WebLarekAPI**
+### Класс WebLarekAPI
 Класс для взаимодействия с API сервера Web-ларёк. Использует композицию с базовым классом Api для выполнения HTTP-запросов к серверу. Предоставляет методы для получения каталога товаров и отправки заказа. Реализует интерфейс `IWebLarekAPI`.
 
 Конструктор:  
@@ -309,7 +337,7 @@ interface IWebLarekAPI {
 
 ## Слой представления (View)
 
-### **Класс Header**
+### Класс Header
 Отвечает за отображение шапки сайта, включая кнопку корзины и счётчик товаров
 
 Конструктор:
@@ -323,7 +351,7 @@ interface IWebLarekAPI {
 Методы:
 `set counter(value: number): void` — обновляет текст счётчика корзины
 
-### **Класс Gallery**
+### Класс Gallery
 Отвечает за отображение галереи товаров на странице
 
 Конструктор:
@@ -336,7 +364,7 @@ interface IWebLarekAPI {
 `set catalog(items: HTMLElement[]): void` — заменяет содержимое галереи переданным массивом карточек товаров
 `render(data: IGallery): HTMLElement` — вызывает `set catalog` с переданными данными и возвращает контейнер галереи
 
-### **Класс Modal**
+### Класс Modal
 Отвечает за управление модальным окном: отображение, закрытие по клику, клавише Escape и кнопке закрытия
 
 Конструктор:
@@ -353,7 +381,7 @@ interface IWebLarekAPI {
 `close(): void` — закрывает модальное окно, удаляет класс `modal_active`, отписывается от события Escape, очищает содержимое и эмитит событие `modal:close`
 `render(data: IModalData): HTMLElement` — устанавливает содержимое и открывает модальное окно, возвращает DOM-элемент контейнера
 
-### **Класс Card**
+### Класс Card
 Родительский абстрактный класс для всех типов карточек товаров. Наследуется от `Component` и содержит общую логику отображения названия и цены
 
 Конструктор:
@@ -368,7 +396,7 @@ interface IWebLarekAPI {
 `set title(value: string): void` — устанавливает текст заголовка карточки
 `set price(value: number | null): void` — отображает цену товара или «Бесценно», если цена отсутствует
 
-### **Класс CardCatalog**
+### Класс CardCatalog
 Представляет карточку товара в каталоге. Наследуется от базового класса `Card` и дополняется отображением изображения и категории товара. Реагирует на клики через переданный обработчик
 
 Конструктор:
@@ -386,7 +414,7 @@ interface IWebLarekAPI {
 `set price(value: number | null): void` — отображает цену товара или «Бесценно» (унаследован от `Card`)
 `setImage(img: HTMLImageElement, src: string, alt?: string): void` — устанавливает изображение (унаследован от `Component`)
 
-### **Класс CardPreview**
+### Класс CardPreview
 Представляет карточку товара для детального просмотра в модальном окне. Наследуется от базового класса `Card` и дополняется отображением изображения, категории, описания и состояния выбора
 
 Конструктор:
@@ -408,7 +436,7 @@ interface IWebLarekAPI {
 `set title(value: string): void` — устанавливает название товара (унаследован от `Card`)
 `setImage(img: HTMLImageElement, src: string, alt?: string): void` — устанавливает изображение (унаследован от `Component`)
 
-### **Класс CardBasket**
+### Класс CardBasket
 
 Отвечает за отображение карточки товара в корзине. Наследуется от `Card` и отображает порядковый номер товара, название, цену и кнопку удаления
 
@@ -425,7 +453,7 @@ interface IWebLarekAPI {
 `set price(value: number | null): void` — отображает цену товара или «Бесценно» (унаследован от `Card`) 
 `setImage(img: HTMLImageElement, url: string, alt?: string): void` — устанавливает изображение товара (унаследован от `Component`)
 
-### **Класс Basket**
+### Класс Basket
 
 Отвечает за отображение содержимого корзины, списка товаров, общей стоимости и кнопки оформления заказа
 
@@ -441,19 +469,99 @@ interface IWebLarekAPI {
 `set items(items: HTMLElement[]): void` — заменяет содержимое списка товаров. Если массив пустой, отображает сообщение «Корзина пуста» и блокирует кнопку оформления
 `set total(total: number): void` — отображает итоговую стоимость всех товаров в корзине в формате X синапсов
 
-### **Класс Form**
+### Класс Form
+Родительский абстрактный класс для всех форм. Управляет отображением ошибок, состоянием кнопки отправки и генерацией событий при изменении полей
 
-### **Класс OrderForm**
+Конструктор:
+`constructor(container: HTMLFormElement, events: IEvents)` — принимает DOM-элемент формы и экземпляр брокера событий. Инициализирует кнопку отправки и контейнер ошибок, навешивает обработчики на события `submit` и `input`
 
-### **Класс ContactsForm**
+Поля класса:
+`_submit: HTMLButtonElement` — кнопка отправки формы (`button[type=submit]`)
+`_errors: HTMLElement` — контейнер для отображения ошибок (`.form__errors`)
+`container: HTMLFormElement` — DOM-элемент формы
+`events: IEvents` — брокер событий для связи с презентером
 
-### **Класс Succes**
+Методы:
+`protected onInputChange(field: keyof T, value: string): void` — эмитит событие изменения поля формы с его именем и значением
+`set valid(value: boolean): void` — включает или отключает кнопку отправки в зависимости от валидности формы
+`set errors(value: string): void` — отображает текст ошибок в контейнере
+`render(state: Partial<IFormState> & T): HTMLElement` — обновляет состояние формы, применяет входные данные и возвращает DOM-элемент формы
 
- ## Описание событий
- `basket:open` — открытие корзины
- `catalog:changed` — изменился каталог товаров
- `card:select` — выбор карточки
- `preview:changed`
- `modal:open`
- `modal:close`
- `order:start`
+### Класс OrderForm
+Представляет первую форму оформления заказа, содержащую поля выбора способа оплаты и адреса доставки. Наследуется от класса `Form`
+
+Конструктор:
+`constructor(container: HTMLFormElement, events: IEvents)` — принимает DOM-элемент формы и брокер событий. Инициализирует кнопки выбора способа оплаты и навешивает обработчики клика, которые обновляют состояние формы и генерируют событие `order:change`
+
+Поля класса:
+`_buttons: HTMLButtonElement[]` — список кнопок выбора способа оплаты (`.button_alt`)
+`container: HTMLFormElement` — DOM-элемент формы (унаследован от `Form`)
+`events: IEvents` — брокер событий (унаследован от `Form`)
+
+Методы:
+`set payment(name: string): void` — активирует кнопку с выбранным способом оплаты, отключает остальные
+`set address(value: string): void` — устанавливает значение поля адреса доставки
+`onInputChange(field: keyof IOrderForm, value: string): void` — генерирует событие `order:change` с именем поля и его значением (унаследован от `Form`)
+`set valid(value: boolean): void` — включает или отключает кнопку отправки формы (унаследован от `Form`)
+`set errors(value: string): void` — отображает текст ошибок (унаследован от `Form`)
+`render(state: Partial<IFormState> & IOrderForm): HTMLElement` — применяет состояние формы и возвращает DOM-элемент формы (унаследован от `Form`)
+
+### Класс ContactsForm
+Представляет вторую форму оформления заказа, содержащую поля для ввода email и телефона. Наследуется от класса `Form`
+
+Конструктор:
+`constructor(container: HTMLFormElement, events: IEvents)` — принимает DOM-элемент формы и брокер событий. Передаёт их в родительский класс `Form`, где настраиваются обработчики `submit` и `input`
+
+Поля класса:
+`container: HTMLFormElement` — DOM-элемент формы (унаследован от `Form`)
+`events: IEvents` — брокер событий для связи с презентером (унаследован от `Form`)
+
+Методы:
+`set email(value: string): void` — устанавливает значение поля email
+`set phone(value: string): void` — устанавливает значение поля телефона
+`onInputChange(field: keyof IContactsForm, value: string): void` — генерирует событие `contacts:change` с именем поля и его значением (унаследован от `Form`)
+`set valid(value: boolean): void` — включает или отключает кнопку отправки формы (унаследован от `Form`)
+`set errors(value: string): void` — отображает текст ошибок (унаследован от `Form`)
+`render(state: Partial<IFormState> & IContactsForm): HTMLElement` — применяет состояние формы и возвращает DOM-элемент формы (унаследован от `Form`)
+
+### Класс Succes
+Представляет модальное окно успешного оформления заказа. Отображает итоговую сумму и предоставляет кнопку закрытия
+
+Конструктор:
+`constructor(container: HTMLElement, actions: ISuccessActions)` — принимает DOM-элемент контейнера и объект с обработчиком `onClick`. Инициализирует элементы интерфейса и навешивает обработчик на кнопку закрытия
+
+Поля класса:
+`_close: HTMLButtonElement` — кнопка закрытия окна (`.order-success__close`)
+`_total: HTMLElement` — элемент для отображения итоговой суммы (`.order-success__description`)
+
+Методы:
+`set total(value: number): void` — отображает сумму списанных синапсов в формате Списано {value} синапсов
+
+## Описание событий
+### От моделей:
+- `catalog:changed` — обновление каталога
+- `preview:changed` — выбор товара для просмотра
+- `cart:changed` — изменение корзины
+- `buyer:changed` — изменение данных покупателя
+
+### От представлений:
+- `card:select` — выбор карточки
+- `basket:open` — открытие корзины
+- `order:start` — начало оформления
+- `order:submit` — отправка первой формы
+- `order:change` — изменение полей первой формы
+- `contacts:submit` — отправка второй формы
+- `contacts:change` — изменение полей второй формы
+
+### От модального окна:
+- `modal:open` — окно открыто
+- `modal:close` — окно закрыто
+
+## Презентер
+Презентер реализован в файле `main.ts` и отвечает за связывание слоёв модели и представления, а также за обработку событий, генерируемых компонентами интерфейса и моделями данных. Он не вынесен в отдельный класс, но полностью реализует паттерн MVP
+
+* подписывается на события от моделей (catalog:changed, cart:changed, buyer:changed)
+* подписывается на события от представлений (card:select, basket:open, order:start, order:submit, contacts:submit)
+* управляет отображением компонентов в модальном окне
+* обновляет состояние форм, корзины и счётчика товаров
+* инициирует создание заказа через API
