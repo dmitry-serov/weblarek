@@ -75,6 +75,7 @@ events.on('preview:changed', () => {
   const item = productsModel.getPreview();
   if (item) {
     const card = new CardPreview(cloneTemplate(cardPreviewTemplate), {
+      // Добавить или удалить товар из корзины
       onClick: () => {
         if (cartModel.contains(item.id)) {
           cartModel.removeItem(item.id);
@@ -85,6 +86,7 @@ events.on('preview:changed', () => {
       }
     });
     
+    // Показать модальное окно с превью товара
     modal.render({
       content: card.render({
         title: item.title,
