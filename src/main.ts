@@ -51,6 +51,9 @@ const basket = new Basket(cloneTemplate(basketTemplate), {
 const orderForm = new OrderForm(cloneTemplate(orderTemplate), events);
 const contactsForm = new ContactsForm(cloneTemplate(contactsTemplate), events);
 
+// Текущая отображаемая карточка превью
+let currentPreviewCard: CardPreview | null = null;
+
 // ========================= СОБЫТИЯ ОТ МОДЕЛЕЙ =========================
 
 // Изменился каталог - отрисовать карточки
@@ -82,10 +85,11 @@ events.on('preview:changed', () => {
         } else {
           cartModel.addItem(item);
         }
-        card.selected = cartModel.contains(item.id);
       }
     });
     
+    // Сохранить ссылку на текущую карточку превью
+    currentPreviewCard = card;
     // Показать модальное окно с превью товара
     modal.render({
       content: card.render({
@@ -97,6 +101,9 @@ events.on('preview:changed', () => {
         selected: cartModel.contains(item.id)
       })
     });
+  } else {
+      // Очистить ссылку на карточку, если превью закрылось
+      currentPreviewCard = null;
   }
 });
 
@@ -120,6 +127,12 @@ events.on('cart:changed', () => {
     items,
     total: cartModel.getTotal()
   });
+
+  // Обновить состояние кнопки в превью, если открыта
+  const previewItem = productsModel.getPreview();
+  if (currentPreviewCard && previewItem) {
+    currentPreviewCard.selected = cartModel.contains(previewItem.id);
+  }
 });
 
 // Изменились данные покупателя - обновить валидацию
@@ -220,6 +233,7 @@ events.on('modal:open', () => {
 // Разблокировка прокрутки при закрытии модального окна
 events.on('modal:close', () => {
   page.locked = false;
+  currentPreviewCard = null;
 });
 
 // Загрузка каталога товаров
