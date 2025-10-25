@@ -234,6 +234,8 @@ interface IWebLarekAPI {
 }
 ```
 
+### Тип type TCardCatalog
+
 ## Модели данных
 
 ### Класс ProductsModel
@@ -304,14 +306,66 @@ interface IWebLarekAPI {
 ## Слой представления (View)
 
 ### **Класс Header**
+Отвечает за отображение шапки сайта, включая кнопку корзины и счётчик товаров
+
+Конструктор:
+`constructor(events: IEvents, container: HTMLElement)` — принимает экземпляр брокера событий и DOM-элемент шапки. Инициализирует элементы интерфейса и навешивает обработчик на кнопку корзины
+
+Поля класса:
+`counterElement: HTMLElement` — элемент для отображения количества товаров в корзине (`.header__basket-counter`)
+`basketButton: HTMLButtonElement` — кнопка открытия корзины (`.header__basket`)
+`events: IEvents` — брокер событий для связи с презентером
+
+Методы:
+`set counter(value: number): void` — обновляет текст счётчика корзины
 
 ### **Класс Gallery**
+Отвечает за отображение галереи товаров на странице
+
+Конструктор:
+`constructor(container: HTMLElement)` — принимает DOM-элемент контейнера галереи и передаёт его в родительский класс `Component`
+
+Поля класса:
+`container: HTMLElement` — корневой DOM-элемент галереи (унаследован от `Component`)
+
+Методы:
+`set catalog(items: HTMLElement[]): void` — заменяет содержимое галереи переданным массивом карточек товаров
+`render(data: IGallery): HTMLElement` — вызывает `set catalog` с переданными данными и возвращает контейнер галереи
 
 ### **Класс Modal**
 
 ### **Класс Card**
+Родительский абстрактный класс для всех типов карточек товаров. Наследуется от `Component` и содержит общую логику отображения названия и цены
+
+Конструктор:
+`constructor(blockName: string, container: HTMLElement)` — принимает имя CSS-блока карточки и DOM-элемент контейнера. Инициализирует элементы заголовка и цены внутри карточки
+
+Поля класса:
+`_title: HTMLElement` — DOM-элемент для отображения названия товара (`.{blockName}__title`)
+`_price: HTMLElement` — DOM-элемент для отображения цены товара (`.{blockName}__price`)
+`blockName: string` — имя CSS-блока, используемое для поиска элементов
+
+Методы:
+`set title(value: string): void` — устанавливает текст заголовка карточки
+`set price(value: number | null): void` — отображает цену товара или «Бесценно», если цена отсутствует
 
 ### **Класс CardCatalog**
+Представляет карточку товара в каталоге. Наследуется от базового класса `Card` и дополняется отображением изображения и категории товара. Реагирует на клики через переданный обработчик
+
+Конструктор:
+`constructor(container: HTMLElement, actions?: ICardActions)` — принимает DOM-элемент карточки и объект с обработчиком `onClick`. Инициализирует элементы изображения и категории, навешивает обработчик клика на карточку
+
+Поля класса:
+`_image: HTMLImageElement` — DOM-элемент изображения товара (`.card__image`)
+`_category: HTMLElement` — DOM-элемент категории товара (`.card__category`)
+`blockName: string` — имя CSS-блока карточки (унаследовано от `Card`)
+
+Методы:
+`set image(value: string): void` — устанавливает изображение товара с помощью `setImage`, передавая `src` и `alt`
+`set category(value: string): void` — отображает название категории и применяет соответствующий CSS-класс из `categoryMap`
+`set title(value: string): void` — устанавливает название товара (унаследован от `Card`)
+`set price(value: number | null): void` — отображает цену товара или «Бесценно» (унаследован от `Card`)
+`setImage(img: HTMLImageElement, src: string, alt?: string): void` — устанавливает изображение (унаследован от `Component`)
 
 ### **Класс CardPreview**
 
@@ -328,6 +382,6 @@ interface IWebLarekAPI {
 ### **Класс Succes**
 
  ## Описание событий
- basket:open
- catalog:changed
- card:select
+ `basket:open` — открытие корзины
+ `catalog:changed` — изменился каталог товаров
+ `card:select` — выбор карточки
