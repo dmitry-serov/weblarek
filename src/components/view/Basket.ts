@@ -1,11 +1,13 @@
 import { Component } from '../base/Component';
 import { createElement, ensureElement } from '../../utils/utils';
 
+// Интерфейс для представления корзины
 interface IBasketView {
   items: HTMLElement[];
   total: number;
 }
 
+//
 interface IBasketActions {
   onOrderClick: () => void;
 }
@@ -25,13 +27,16 @@ export class Basket extends Component<IBasketView> {
     this._total = ensureElement<HTMLElement>('.basket__price', this.container);
     this._button = ensureElement<HTMLButtonElement>('.basket__button', this.container);
 
+    // Привязка обработчика клика к кнопке оформления заказа
     if (actions?.onOrderClick) {
       this._button.addEventListener('click', actions.onOrderClick);
     }
 
+    // Инициализация корзины как пустой
     this.items = [];
   }
 
+  // Установка элементов корзины
   set items(items: HTMLElement[]) {
     if (items.length) {
       this._list.replaceChildren(...items);
@@ -44,6 +49,7 @@ export class Basket extends Component<IBasketView> {
     }
   }
 
+  // Установка общей стоимости корзины
   set total(total: number) {
     this._total.textContent = `${total} синапсов`;
   }

@@ -1,5 +1,6 @@
 import { Component } from '../base/Component';
 
+// Интерфейс для данных галереи
 interface IGallery {
   catalog: HTMLElement[];
 }
@@ -12,10 +13,12 @@ export class Gallery extends Component<IGallery> {
     super(container);
   }
 
+  // Установка элементов каталога
   set catalog(items: HTMLElement[]) {
     this.container.replaceChildren(...items);
   }
   
+  // Рендеринг галереи
   render(data: IGallery): HTMLElement {
     this.catalog = data.catalog;
     return this.container;

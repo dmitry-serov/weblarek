@@ -2,6 +2,7 @@ import { Form } from './Form';
 import { IEvents } from '../base/Events';
 import { ensureAllElements } from '../../utils/utils';
 
+// Интерфейс для данных формы заказа
 interface IOrderForm {
   payment: string;
   address: string;
@@ -18,6 +19,7 @@ export class OrderForm extends Form<IOrderForm> {
 
     this._buttons = ensureAllElements<HTMLButtonElement>('.button_alt', this.container);
 
+    // Обработка кликов по кнопкам способов оплаты
     this._buttons.forEach(button => {
       button.addEventListener('click', () => {
         this.payment = button.name;
@@ -26,12 +28,14 @@ export class OrderForm extends Form<IOrderForm> {
     });
   }
 
+  // Сохранение способа оплаты
   set payment(name: string) {
     this._buttons.forEach(button => {
       button.classList.toggle('button_alt-active', button.name === name);
     });
   }
 
+  // Сохранение адреса из формы
   set address(value: string) {
     (this.container.elements.namedItem('address') as HTMLInputElement).value = value;
   }

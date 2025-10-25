@@ -1,6 +1,7 @@
 import { Form } from './Form';
 import { IEvents } from '../base/Events';
 
+// Интерфейс для данных формы контактов
 interface IContactsForm {
   email: string;
   phone: string;
@@ -14,10 +15,12 @@ export class ContactsForm extends Form<IContactsForm> {
     super(container, events);
   }
 
+  // Сохранение email из формы
   set email(value: string) {
     (this.container.elements.namedItem('email') as HTMLInputElement).value = value;
   }
 
+  // Сохранение телефона из формы
   set phone(value: string) {
     (this.container.elements.namedItem('phone') as HTMLInputElement).value = value;
   }

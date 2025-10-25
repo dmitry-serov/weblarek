@@ -1,6 +1,7 @@
 import { Component } from '../base/Component';
 import { ensureElement } from '../../utils/utils';
 
+// Интерфейс для карточки товара
 interface ICard {
   title: string;
   price: number | null;
@@ -20,10 +21,12 @@ export abstract class Card<T extends ICard> extends Component<T> {
     this._price = ensureElement<HTMLElement>(`.${blockName}__price`, container);
   }
 
+  // Установка заголовка карточки
   set title(value: string) {
     this._title.textContent = value;
   }
 
+  // Установка цены карточки
   set price(value: number | null) {
     this._price.textContent = value === null 
       ? 'Бесценно' 

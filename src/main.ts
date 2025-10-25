@@ -19,7 +19,7 @@ import { ContactsForm } from './components/view/ContactsForm';
 import { Success } from './components/view/Success';
 import { IOrder,IProduct } from './types/index';
 
-
+// Создание глобального объекта событий
 const events = new EventEmitter();
 
 // Создание экземпляров классов
@@ -28,7 +28,6 @@ const webLarekAPI = new WebLarekAPI(api);
 const buyerModel = new BuyerModel(events);
 const productsModel = new ProductsModel(events);
 const cartModel = new CartModel(events);
-
 
 // Инициализация шапки сайта
 const headerContainer = ensureElement<HTMLElement>('.header');
@@ -59,6 +58,8 @@ const basket = new Basket(cloneTemplate(basketTemplate), {
 // Инициализация форм оформления заказа
 const orderForm = new OrderForm(cloneTemplate(orderTemplate), events);
 const contactsForm = new ContactsForm(cloneTemplate(contactsTemplate), events);
+
+// ========================= СОБЫТИЯ ОТ МОДЕЛЕЙ =========================
 
 // Изменился каталог - отрисовать карточки
 events.on('catalog:changed', () => {
@@ -139,6 +140,8 @@ events.on('buyer:changed', () => {
   contactsForm.valid = Object.keys(contactsErrors).length === 0;
   contactsForm.errors = Object.values(contactsErrors).filter(i => !!i).join('; ');
 });
+
+//  ========================= СОБЫТИЯ ОТ VIEW =========================
 
 // Выбрана карточка для просмотра
 events.on('card:select', (item: IProduct) => {
