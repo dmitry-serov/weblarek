@@ -44,14 +44,6 @@ export interface IOrderResult {
   total: number;
 }
 
-// Интерфейс объекта с ошибками валидации
-export interface IValidationErrors {
-  payment?: string;
-  address?: string;
-  email?: string;
-  phone?: string;
-}
-
 // Интерфейс для модели управления каталогом товаров
 export interface IProductsModel {
   setItems(items: IProduct[]): void;
@@ -78,7 +70,7 @@ export interface IBuyerModel {
   setData(data: Partial<IBuyerData>): void;
   getData(): IBuyerData;
   clear(): void;
-  validate(): IValidationErrors;
+  validate(): Partial<Record<keyof IBuyerData, string>>;
 }
 
 // Интерфейс для взаимодействия с API интернет-магазина

@@ -1,4 +1,4 @@
-import { IBuyerData, TPayment, IValidationErrors, IBuyerModel } from '../../types/index';
+import { IBuyerData, TPayment, IBuyerModel } from '../../types/index';
 import { IEvents } from '../base/Events';
 
 /**
@@ -63,8 +63,8 @@ export class BuyerModel implements IBuyerModel {
    * Можно указать шаг: 1 (оплата + адрес) или 2 (email + телефон)
    * @returns объект с ошибками валидации
    */
-  validate(): IValidationErrors {
-    const errors: IValidationErrors = {};
+  validate(): Partial<Record<keyof IBuyerData, string>> {
+    const errors: Partial<Record<keyof IBuyerData, string>> = {};
 
     if (!this._payment) {
       errors.payment = 'Выберите способ оплаты';
